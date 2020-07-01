@@ -1,16 +1,16 @@
 # ChartReader
 Image Processing and Data Mining for scientific figures from research papers. 
 
-## Axes Detection:
+## Axes Detection
 Hough transform feature extraction technique is used to determine the horizontal and vertical axes in the plot image.
 The leftmost and the bottommost axes are detected from the set of lines to be the y-axis and x-axis respectively. 
 
-## Text detection:
+## Text detection
 Pytesseract python module is used to detect text from the images.
 Since the text would be in black, the image is converted to HSV and only the black color is filtered.
 Tesseract is now run on this image to get the bounding boxes for the text. 
 
-## Label Detection:
+## Label Detection
 ### X-labels:
 1. Filter the text boxes which are below the x-axis(, and to the right of y-axis).
 2. Run a sweeping line from x-axis to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
@@ -27,13 +27,13 @@ Tesseract is now run on this image to get the bounding boxes for the text.
 2. With the end line in the Y-axis text above and the line obtained now, whiten the image except for this bounding area.
 3. Run tesseract to detect only numeric values.
 
-## Label detection/finalization:
+## Label detection/finalization
 For each bounding rectangle obtained, it is checked whether there is a text box to the immediate right of the rectangle.
 
-### Legends text: 
+### Legend text: 
 The immediate rectangle to the right gives the corresponding legend.
 
-## Cluster count estimation:
+## Cluster count estimation
 1. This is done by determining the number of items in the legend.
 2. Check only the text boxes right to the y-axis and top of x-axis
 3. Filter further by considering text boxes which have non-numeric text
@@ -41,13 +41,13 @@ The immediate rectangle to the right gives the corresponding legend.
 5. The maximum intersection gives all the legend texts and the number of legends.
 6. Now, these rectangles (or bounding boxes) are merged. The final number of rectangles gives the number of legends and the image colors are clustered into these many groups.
 
-## Color detection:
+## Color detection
 1. All the pixel values of the image are divided into clusters. The number of clusters are determined by the above described procedure. Also, prior to clustering, all the white pixels are removed.
 2. We then simplify the given plot into multiple plots (one per each cluster). These plots would be a simple bar plot. i.e.., by clustering we convert a stacked bar chart into multiple simpler bar plots.
 3. We then get the contours for the plot, and subsequently bounding rectangles for the contours determined.
 The noise is removed by determining if the number of bounding rectangles are either 0 or abnormally high.
 
-## Data extraction:
+## Data extraction
 ### Value-tick ratio calculation: 
 This ratio is used to calculate the y-values from each bar-plot using the pixel projection method.
 Y-axis Ticks are detected by left-bounding boxes to the y-axis.
@@ -61,5 +61,5 @@ The height of each bounding box is recorded by the help of the merging rectangle
 This ratio is then used to calculate the y_values.
 ``:=  v_value = normalize_ratio``   height of bounding box.
 
-## Reporting results:
+## Reporting results
 The results (axes, legends, labels, values, captions and file-names) are written to the Excel sheet.
