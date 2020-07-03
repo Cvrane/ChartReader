@@ -1,6 +1,9 @@
 # ChartReader
 Image Processing and Data Mining for scientific figures from research papers. 
 
+## Image set
+Bar plots (after cropping and pre-processing) used are here: https://drive.google.com/drive/u/1/folders/1aBQT_r22TNLmb4h3azOqS2VtMRxmhDUZ
+
 ## Axes Detection
 Hough transform feature extraction technique is used to determine the horizontal and vertical axes in the plot image.
 The leftmost and the bottommost axes are detected from the set of lines to be the y-axis and x-axis respectively. 
