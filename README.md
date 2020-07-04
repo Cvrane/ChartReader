@@ -5,8 +5,19 @@ Image Processing and Data Mining for scientific figures from research papers.
 Bar plots (after cropping and pre-processing) used are here: https://drive.google.com/drive/u/1/folders/1aBQT_r22TNLmb4h3azOqS2VtMRxmhDUZ
 
 ## Axes Detection
-Hough transform feature extraction technique is used to determine the horizontal and vertical axes in the plot image.
-The leftmost and the bottommost axes are detected from the set of lines to be the y-axis and x-axis respectively. 
+1. Firstly, the image is converted into bw image (black and white), then the max-continuous ones along each row and each column are obtained.
+2. Next, for all columns, the maximum value of the max-continuous 1s is picked.
+3. A certain threshold (=10) is assumed, and the first column where the max-continuous 1s falls in the region [max - threshold, max + threshold] is the y-axis.
+4. Similar approach is followed for the x-axis, but the last row is picked where the max-continuous 1s fall in the region [max - threshold, max + threshold]
+
+140/162 images got their x and y-axis accurate with the above described approach.
+
+<h3 align="center">
+  <img src="images/AxesDetectionExample1.png" width="800">
+</h3>
+<h3 align="center">
+  <img src="images/AxesDetectionExample2.png" width="800">
+</h3>
 
 ## Text detection
 Pytesseract python module is used to detect text from the images.
