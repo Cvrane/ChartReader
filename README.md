@@ -21,8 +21,20 @@ Bar plots (after cropping and pre-processing) used are here: https://drive.googl
 
 ## Text detection
 Pytesseract python module is used to detect text from the images.
-Since the text would be in black, the image is converted to HSV and only the black color is filtered.
 Tesseract is now run on this image to get the bounding boxes for the text. 
+An option of `bw` is provided. When this is `True`, then since the text would be in black, the image is converted to HSV and only the black color is filtered. But this leads to inaccurate text. Hence whiten the original image except these bounding boxes and run tesseract again to get the text. The difference between bounding boxes on actual image and the HSV image is shown below.
+
+Bounding boxes for normal image.
+
+<h3 align="center">
+  <img src="images/TextDetectionExample1-1.png" width="800">
+</h3>
+
+Bounding boxes when `bw` is set to `True`.
+
+<h3 align="center">
+  <img src="images/TextDetectionExample1-2.png" width="800">
+</h3>
 
 ## Label Detection
 ### X-labels:
