@@ -41,7 +41,9 @@ Bounding boxes when `bw` is set to `True`.
 1. Filter the text boxes which are below the x-axis(, and to the right of y-axis).
 2. Run a sweeping line from x-axis to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
 3. This maximum intersection gives all the bounding boxes for all the x-labels.
-       
+    
+![](images/LabelDetectionExample.gif)
+
 ### Y-labels:
 1. Run a sweeping line in the reverse direction, i.e., y-axis and start moving towards the left. Stop when the line has all white pixels (This makes sure you have crossed the ticks)
 2. Whiten the image to the right of this line.
