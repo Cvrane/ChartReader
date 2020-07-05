@@ -41,17 +41,20 @@ Bounding boxes when `bw` is set to `True`.
 1. Filter the text boxes which are below the x-axis(, and to the right of y-axis).
 2. Run a sweeping line from x-axis to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
 3. This maximum intersection gives all the bounding boxes for all the x-labels.
- 
-### Y-axis text:
-1. Run a sweeping line from the left of the image. Observe that initially, every pixel on the line would be white (=255). Stop when the line doesn’t contain all white pixels (i.e., there is some text that is hit). This is your left bound for the y-axis text.. Continue running the sweeping line, now until all the pixels on the line are white (=250-255) again. This is your rightmost bound for the text.
-2. Whiten the rest of the image except for this bounding area. 
-3. Rotate the image by 90 degree, since the text on y-axis would be vertical.
-4. Run tesseract to get the text
        
 ### Y-labels:
 1. Run a sweeping line in the reverse direction, i.e., y-axis and start moving towards the left. Stop when the line has all white pixels (This makes sure you have crossed the ticks)
-2. With the end line in the Y-axis text above and the line obtained now, whiten the image except for this bounding area.
+2. Whiten the image to the right of this line.
 3. Run tesseract to detect only numeric values.
+
+### Y-axis text:
+1. Pick the whitened image above, and whiten the bounding boxes for the numeric y-labels detected above.
+2. Rotate the image by 90 degree, since the text on y-axis would be vertical.
+3. Run tesseract to get the text
+
+<h3 align="center">
+  <img src="images/LabelDetectionExample1.png" width="800">
+</h3>
 
 ## Label detection/finalization
 For each bounding rectangle obtained, it is checked whether there is a text box to the immediate right of the rectangle.
