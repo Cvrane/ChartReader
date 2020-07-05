@@ -84,9 +84,9 @@ This ratio is used to calculate the y-values from each bar-plot using the pixel 
 Y-axis Ticks are detected by left-bounding boxes to the y-axis.
 
 Once the pixel values for the ticks are stored, the mean distance between the ticks is calculated.
-Further, the mean value of the actual y-label ticks is calculated.
+Further, the mean value of the actual y-label ticks is calculated. <br>
 Finally, the value-tick ratio is calculated by
- ``:= normalize_ratio =ticks_diff.mean() / y-ticks.mean()``.
+ ``:= normalize_ratio =ticks_diff.mean() / y-ticks.mean()``. <br>
 The height of each bounding box is recorded by the help of the merging rectangles during Cluster count estimation method. 
   
 This ratio is then used to calculate the y_values.
