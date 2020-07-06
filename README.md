@@ -36,6 +36,15 @@ Bounding boxes when `bw` is set to `True`.
   <img src="images/TextDetectionExample1-2.png" width="800">
 </h3>
 
+## Number detection (using tesseract)
+Use the config `-l eng --oem 1 --psm 6 -c tessedit_char_whitelist=.0123456789` to detect only numbers using tesseract. Note that through the experiments, it is observed that psm mode 6 works better than other psm modes for numerical value detection. Below shows the comparision with psm modes 11 and 6.
+
+<h3 align="center">
+  <img src="images/NumberDetectionExample.png" width="800">
+</h3>
+
+We can see that, with `psm mode 11`, the numbers 90, 60, 40 and 0 are missed (or detected as non-numeric text), whereas with `psm mode 6`, these are detected as numeric values.
+
 ## Label Detection
 ### X-labels:
 1. Filter the text boxes which are below the x-axis(, and to the right of y-axis).
