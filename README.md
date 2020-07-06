@@ -46,8 +46,14 @@ Bounding boxes when `bw` is set to `True`.
 
 ### Y-labels:
 1. Run a sweeping line in the reverse direction, i.e., y-axis and start moving towards the left. Stop when the line has all white pixels (This makes sure you have crossed the ticks)
-2. Whiten the image to the right of this line.
-3. Run tesseract to detect only numeric values.
+2. Process the image with the following steps:
+   a. Convert to binary image (black and white), using OTSU threshold
+   b. Use a rectangle kernel of (1, 15) and apply morphological operations
+   c. Use a rectangle kernel of (5, 1) and apply morphological operations
+   d. Run a contour detection using opencv and get the bounding rectangles
+3. Run a sweeping line from y-axis and start moving towards the left, and check when the sweeping line intersects with the maximum number of text boxes.
+4. Whiten the image and keep only these text boxes where there was maximum intersection.
+5. Run tesseract to detect only numeric values.
 
 ### Y-axis text:
 1. Pick the whitened image above, and whiten the bounding boxes for the numeric y-labels detected above.
