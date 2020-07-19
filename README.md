@@ -2,7 +2,7 @@
 Image Processing and Data Mining for scientific figures from research papers. 
 
 ## Image set
-Bar plots (after cropping and pre-processing) used are here: https://drive.google.com/drive/u/1/folders/1aBQT_r22TNLmb4h3azOqS2VtMRxmhDUZ
+Bar plots used are here: https://drive.google.com/drive/u/1/folders/154sgx3M49NoKOoOjoppsSuvqd2WzqZqX
 
 ## Chart classification
 Still a WIP to improve test accuracy. The following are the training data used, and model files.
