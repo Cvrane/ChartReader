@@ -4,13 +4,24 @@ Image Processing and Data Mining for scientific figures from research papers.
 ## Image set
 Bar plots (after cropping and pre-processing) used are here: https://drive.google.com/drive/u/1/folders/1aBQT_r22TNLmb4h3azOqS2VtMRxmhDUZ
 
+## Chart classification
+Still a WIP to improve test accuracy. The following are the training data used, and model files.
+<br>training corpus (revision): https://drive.google.com/drive/u/1/folders/11_zFtMDzmXNH0IQUWryhbznsMvAaLTqz
+<br>model: https://drive.google.com/drive/u/1/folders/1wgKct3UDm86WgtqsHhciKusTPMnrG6C3
+
+pretrained model VGG19 is used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
+The following are the training accuracy and loss curves captured during the training phase.
+
+<h3 align="center">
+  <img src="images/accuracy.png" width="400">
+  <img src="images/loss.png" width="400">
+</h3>
+
 ## Axes Detection
 1. Firstly, the image is converted into bw image (black and white), then the max-continuous ones along each row and each column are obtained.
 2. Next, for all columns, the maximum value of the max-continuous 1s is picked.
 3. A certain threshold (=10) is assumed, and the first column where the max-continuous 1s falls in the region [max - threshold, max + threshold] is the y-axis.
 4. Similar approach is followed for the x-axis, but the last row is picked where the max-continuous 1s fall in the region [max - threshold, max + threshold]
-
-140/162 images got their x and y-axis accurate with the above described approach.
 
 <h3 align="center">
   <img src="images/AxesDetectionExample1.png" width="800">
