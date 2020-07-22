@@ -88,7 +88,7 @@ The following are 100 randonly picked images which are predicted as bar plots. H
   <img src="images/BarplotPrediction.png" width="1000">
 </h3>
 
-## Axes Detection
+## Axes Detection (Accuracy: 80.22%) [1006/1254 correct]
 1. Firstly, the image is converted into bw image (black and white), then the max-continuous ones along each row and each column are obtained.
 2. Next, for all columns, the maximum value of the max-continuous 1s is picked.
 3. A certain threshold (=10) is assumed, and the first column where the max-continuous 1s falls in the region [max - threshold, max + threshold] is the y-axis.
@@ -99,6 +99,13 @@ The following are 100 randonly picked images which are predicted as bar plots. H
 </h3>
 <h3 align="center">
   <img src="images/AxesDetectionExample2.png" width="800">
+</h3>
+
+### Results
+Both x and y axes are detected correctly for 1006 images out of 1254 images (test data set). Below are some of the failed cases in axes detection.
+
+<h3 align="center">
+  <img src="images/AxesDetectionResult.png" width="800">
 </h3>
 
 ## Text detection
