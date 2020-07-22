@@ -5,7 +5,7 @@ Fully automated end-to-end framework to extract data from bar plots and other fi
 Bar plots used are here: https://drive.google.com/drive/u/1/folders/154sgx3M49NoKOoOjoppsSuvqd2WzqZqX
 
 ## Chart classification (Accuracy: 84.01%)
-### Training data preparation
+### Data preparation
 <b> Step 1: </b> ``google_images_download`` python module is used to download google images for each type of chart: Area chart, Line chart, bar plot, pie chart, venn diagram etc. based on their corresponding keywords.
 
 ```
@@ -56,7 +56,7 @@ Below is the count of images for each type:
 </tr>
 </table>
 
-### Training and results:
+### Training phase:
 pretrained model VGG19 is used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
 
 The accuracy is calculated using stratified five-fold cross validation. The accuracy of the model is ``84.01%``. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
@@ -79,6 +79,13 @@ The accuracy is calculated using stratified five-fold cross validation. The accu
 
 <h3 align="center">
   <img src="images/accuracy-curve5.png" width="800">
+</h3>
+
+### Results (predictions on test data)
+The following are 100 randonly picked images which are predicted as bar plots.
+
+<h3 align="center">
+  <img src="images/barplot_prediction.png" width="1000">
 </h3>
 
 ## Axes Detection
