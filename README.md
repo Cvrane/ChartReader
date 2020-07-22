@@ -29,6 +29,7 @@ Below is the count of images for each type:
 | BarGraph      |   528         |
 | VennDiagram   |   364         |
 | PieChart      |   355         |
+| ScatterGraph  |   335         |
 
 </td>
 <td>
@@ -38,6 +39,7 @@ Below is the count of images for each type:
 | TreeDiagram   |   297         |
 | FlowChart     |   293         |
 | Map           |   276         |
+| ParetoChart   |   329         |
 
 </td>
 <td>
@@ -47,14 +49,6 @@ Below is the count of images for each type:
 | BubbleChart   |   311         |
 | LineGraph     |   300         |
 | AreaGraph     |   299         |
-
-</td>
-<td>
-
-| Plot type     | Count         |
-| ------------- |:-------------:|
-| ScatterGraph  |   335         |
-| ParetoChart   |   329         |
 | NetworkDiagram|   321         |
 | BoxPlot       |   312         |
 
