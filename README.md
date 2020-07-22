@@ -1,20 +1,90 @@
 # ChartReader
-Image Processing and Data Mining for scientific figures from research papers. 
+Fully automated end-to-end framework to extract data from bar plots and other figures in scientific research papers using modules such as OpenCV, Tesseract.
 
 ## Image set
 Bar plots used are here: https://drive.google.com/drive/u/1/folders/154sgx3M49NoKOoOjoppsSuvqd2WzqZqX
 
-## Chart classification
-Still a WIP to improve test accuracy. The following are the training data used, and model files.
-<br>training corpus (revision): https://drive.google.com/drive/u/1/folders/11_zFtMDzmXNH0IQUWryhbznsMvAaLTqz
-<br>model: https://drive.google.com/drive/u/1/folders/1wgKct3UDm86WgtqsHhciKusTPMnrG6C3
+## Chart classification (Accuracy: 84.01%)
+### Training data preparation
+<b> Step 1: </b> ``google_images_download`` python module is used to download google images for each type of chart: Area chart, Line chart, bar plot, pie chart, venn diagram etc. based on their corresponding keywords.
 
+```
+$ git clone https://github.com/Joeclinton1/google-images-download.git
+$ cd google-images-download && python setup.py install
+```
+
+<b> Step 2: </b> The downloaded images are carefully reviewed and the incorrect images are removed.
+
+The following are the training data used, and model files.
+<br>training corpus: https://drive.google.com/drive/u/1/folders/1M8kwdQE7bpjpdT08ldBURFdzLaQR9n5h
+<br>model: https://drive.google.com/drive/u/1/folders/1GVW_MtFFYT-Tj44p0_QLKM7hVnn_AcKI
+
+Below is the count of images for each type:
+<table>
+<tr>
+<td>
+
+| Plot type     | Count         |
+| ------------- |:-------------:|
+| BarGraph      |   528         |
+| VennDiagram   |   364         |
+| PieChart      |   355         |
+
+</td>
+<td>
+
+| Plot type     | Count         |
+| ------------- |:-------------:|
+| TreeDiagram   |   297         |
+| FlowChart     |   293         |
+| Map           |   276         |
+
+</td>
+<td>
+
+| Plot type     | Count         |
+| ------------- |:-------------:|
+| BubbleChart   |   311         |
+| LineGraph     |   300         |
+| AreaGraph     |   299         |
+
+</td>
+<td>
+
+| Plot type     | Count         |
+| ------------- |:-------------:|
+| ScatterGraph  |   335         |
+| ParetoChart   |   329         |
+| NetworkDiagram|   321         |
+| BoxPlot       |   312         |
+
+</td>
+</tr>
+</table>
+
+### Training and results:
 pretrained model VGG19 is used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
-The following are the training accuracy and loss curves captured during the training phase.
+
+The accuracy is calculated using stratified five-fold cross validation. The accuracy of the model is ``84.01%``. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
 
 <h3 align="center">
-  <img src="images/accuracy.png" width="400">
-  <img src="images/loss.png" width="400">
+  <img src="images/accuracy-curve1.png" width="800">
+</h3>
+
+<h3 align="center">
+  <img src="images/accuracy-curve2.png" width="800">
+</h3>
+
+<h3 align="center">
+  <img src="images/accuracy-curve3.png" width="800">
+</h3>
+
+<h3 align="center">
+  <img src="images/accuracy-curve4.png" width="800">
+</h3>
+
+<h3 align="center">
+  <img src="images/accuracy-curve5.png" width="800">
 </h3>
 
 ## Axes Detection
