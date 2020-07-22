@@ -82,10 +82,10 @@ The accuracy is calculated using stratified five-fold cross validation. The accu
 </h3>
 
 ### Results (predictions on test data)
-The following are 100 randonly picked images which are predicted as bar plots.
+The following are 100 randonly picked images which are predicted as bar plots. Highlighted images (12 in number out of 100 randomly picked) are incorrectly classified as bar plots.
 
 <h3 align="center">
-  <img src="images/barplot_prediction.png" width="1000">
+  <img src="images/BarplotPrediction.png" width="1000">
 </h3>
 
 ## Axes Detection
