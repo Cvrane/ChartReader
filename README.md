@@ -190,14 +190,22 @@ The noise is removed by determining if the number of bounding rectangles are eit
 ### Value-tick ratio calculation: 
 This ratio is used to calculate the y-values from each bar-plot using the pixel projection method. Y-axis ticks are detected by left-bounding boxes to the y-axis.
 
-Since the text detection (numeric values) isn't perfect, once the pixel values for the ticks and actual y-label texts are obtained, the outliers are removed by assuming a normal distribution and whether the values deviate very much. Then, the mean distance between the ticks is calculated. Further, the mean value of the actual y-label ticks is calculated. Finally, the value-tick ratio is calculated by ``normalize_ratio := ticks_diff.mean() / y-ticks.mean()``.
+Since the text detection (numeric values) isn't perfect, once the pixel values for the ticks and actual y-label texts are obtained, the outliers are removed by assuming a normal distribution and whether the values deviate very much. Then, the mean distance between the ticks is calculated. Further, the mean value of the actual y-label ticks is calculated. Finally, the value-tick ratio is calculated by :
 
-The height of each bounding box is recorded by the help of the merging rectangles during Cluster count estimation method. This ratio is then used to calculate the ``y_values :=  v_value = normalize_ratio x height of bounding box``.
+<h3 align="center">
+  <img src="images/equation2.gif">
+</h3>
+
+The height of each bounding box is recorded by the help of the merging rectangles during Cluster count estimation method. This ratio is used to further calculate the y-values :
+
+<h3 align="center">
+  <img src="images/equation1.gif">
+</h3>
 
 Below shows data extraction results on an image.
 
 <h3 align="center">
-  <img src="images/DataExtractionExample.png" width="800">
+  <img src="images/DataExtractionExample.png">
 </h3>
 
 Note that the highlighted numbers (in red) are related to the legend related bounding boxes and WIP to be further processed and removed.
