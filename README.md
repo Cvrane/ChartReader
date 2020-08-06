@@ -1,10 +1,10 @@
 # ChartReader
-Fully automated end-to-end framework to extract data from bar plots and other figures in scientific research papers using modules such as OpenCV, Tesseract.
+Fully automated end-to-end framework to extract data from bar plots and other figures in scientific research papers using modules such as OpenCV, Tesseract/AWS-Rekognition.
 
 ## Image set
 Bar plots used are here: https://drive.google.com/drive/u/1/folders/154sgx3M49NoKOoOjoppsSuvqd2WzqZqX
 
-## Chart classification (Accuracy: 84.01%)
+## Chart classification (Accuracy: 84.08%)
 ### Data preparation
 <b> Step 1: </b> ``google_images_download`` python module is used to download google images for each type of chart: Area chart, Line chart, bar plot, pie chart, venn diagram etc. based on their corresponding keywords.
 
@@ -59,7 +59,7 @@ Below is the count of images for each type:
 ### Training phase:
 pretrained model VGG19 is used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
 
-The accuracy is calculated using stratified five-fold cross validation. The accuracy of the model is ``84.01%``. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
+The accuracy is calculated using stratified five-fold cross validation. The accuracy of the model is ``84.08%``. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
 
 <h3 align="center">
   <img src="images/accuracy-curve1.png" width="800">
@@ -82,7 +82,7 @@ The accuracy is calculated using stratified five-fold cross validation. The accu
 </h3>
 
 ### Results (predictions on test data)
-The following are 100 randonly picked images which are predicted as bar plots. Highlighted images (12 in number out of 100 randomly picked) are incorrectly classified as bar plots.
+The following are 100 randonly picked images which are predicted as bar plots. Highlighted images (6 in number out of 100 randomly picked) are incorrectly classified as bar plots.
 
 <h3 align="center">
   <img src="images/BarplotPrediction.png" width="1000">
