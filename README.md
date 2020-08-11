@@ -1,5 +1,5 @@
 # ChartReader
-Fully automated end-to-end framework to extract data from bar plots and other figures in scientific research papers using modules such as OpenCV, Tesseract/AWS-Rekognition.
+Fully automated end-to-end framework to extract data from bar plots and other figures in scientific research papers using modules such as OpenCV, AWS-Rekognition for text detection in images.
 
 ## Image set
 Bar plots used are here: https://drive.google.com/drive/u/1/folders/154sgx3M49NoKOoOjoppsSuvqd2WzqZqX
@@ -89,7 +89,7 @@ The following are 100 randonly picked images which are predicted as bar plots. H
 </h3>
 
 ## Axes Detection (Accuracy: 80.22%) [1006/1254 correct]
-1. Firstly, the image is converted into bw image (black and white), then the max-continuous ones along each row and each column are obtained.
+1. Firstly, the image is converted into black and white image, then the max-continuous ones along each row and each column are obtained.
 2. Next, for all columns, the maximum value of the max-continuous 1s is picked.
 3. A certain threshold (=10) is assumed, and the first column where the max-continuous 1s falls in the region [max - threshold, max + threshold] is the y-axis.
 4. Similar approach is followed for the x-axis, but the last row is picked where the max-continuous 1s fall in the region [max - threshold, max + threshold]
@@ -109,30 +109,16 @@ Both x and y axes are detected correctly for 1006 images out of 1254 images (tes
 </h3>
 
 ## Text detection
-Pytesseract python module is used to detect text from the images.
-Tesseract is now run on this image to get the bounding boxes for the text. 
-An option of `bw` is provided. When this is `True`, then since the text would be in black, the image is converted to HSV and only the black color is filtered. But this leads to inaccurate text. Hence whiten the original image except these bounding boxes and run tesseract again to get the text. The difference between bounding boxes on actual image and the HSV image is shown below.
+AWS-Rekognition is used to detect text in the image. [DetectText](https://docs.aws.amazon.com/rekognition/latest/dg/API_DetectText.html) API is used for detecting text. Only the text with confidence >= 80 are considered.
 
-Bounding boxes for normal image.
+### Double-pass algorithm for text detection
+To improve text detection algorithm, double-pass algorithm is employed.
+1. Text detection using detect_text AWS Rekognition API, and considered only the text boxes for which confidence >= 80
+2. Fill the polygons corresponding to these text with white color
+3. Run text detection (2nd pass) on the new image, and consider only the ones with confidence >= 80
 
-<h3 align="center">
-  <img src="images/TextDetectionExample1-1.png" width="800">
-</h3>
-
-Bounding boxes when `bw` is set to `True`.
-
-<h3 align="center">
-  <img src="images/TextDetectionExample1-2.png" width="800">
-</h3>
-
-## Number detection (using tesseract)
-Use the config `-l eng --oem 1 --psm 6 -c tessedit_char_whitelist=.0123456789` to detect only numbers using tesseract. Note that through the experiments, it is observed that psm mode 6 works better than other psm modes for numerical value detection. Below shows the comparision with psm modes 11 and 6.
-
-<h3 align="center">
-  <img src="images/NumberDetectionExample.png" width="800">
-</h3>
-
-We can see that, with `psm mode 11`, the numbers 90, 60, 40 and 0 are missed (or detected as non-numeric text), whereas with `psm mode 6`, these are detected as numeric values.
+### Bounding Box calculation
+There is an [issue](https://forums.aws.amazon.com/thread.jspa?threadID=325482&tstart=0) with bounding box for vertical text or text with an angle. Therefore, bounding box is calculated from the polygon coordinates (or vertices) from the AWS Rekognition output. 
 
 ## Label Detection
 ### X-labels:
@@ -142,31 +128,35 @@ We can see that, with `psm mode 11`, the numbers 90, 60, 40 and 0 are missed (or
     
 ![](images/LabelDetectionExample.gif)
 
+### X-text
+1. Filter the text boxes which are below the x-labels
+2. Run a sweeping line from x-axis to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
+3. This maximum intersection gives all the bounding boxes for all the x-text.
+
 ### Y-labels:
-1. Run a sweeping line in the reverse direction, i.e., y-axis and start moving towards the left. Stop when the line has all white pixels (This makes sure you have crossed the ticks)
-2. Process the image with the following steps:
+1. Filter the text boxes which are to the left of y-axis.
+2. Run a sweeping line from y-axis and start moving towards the left, and check when the sweeping line intersects with the maximum number of text boxes.
+3. Keep only these text boxes where there was maximum intersection, and use python regex to detect only numeric values.
 
-    a. Convert to binary image (black and white), using OTSU threshold
-
-    b. Use a rectangle kernel of (1, 15) and apply morphological operations
-    
-    c. Use a rectangle kernel of (5, 1) and apply morphological operations
-    
-    d. Run a contour detection using opencv and get the bounding rectangles
-3. Run a sweeping line from y-axis and start moving towards the left, and check when the sweeping line intersects with the maximum number of text boxes.
-4. Whiten the image and keep only these text boxes where there was maximum intersection.
-5. Run tesseract to detect only numeric values.
-
-### Y-axis text:
-1. Pick the whitened image above, and whiten the bounding boxes for the numeric y-labels detected above.
-2. Rotate the image by 90 degree, since the text on y-axis would be vertical.
-3. Run tesseract to get the text
+### Y-text:
+1. Filter the text boxes which are to the left of y-axis.
+2. Pick the remaining text which are not classified as y-labels as y-text
 
 <h3 align="center">
   <img src="images/LabelDetectionExample1.png" width="800">
 </h3>
 
-## Label detection/finalization
+### Legend detection
+1. Filter the text boxes that are above the x-axis, and to the right of y-axis.
+2. Clean the text to remove 'I'. These are obtained since error bars in the charts are detected as 'I' by AWS Rekognition OCR API(s).
+3. Use an appropriate regex to disregard the numerical values. These are mostly the ones which are there on top of the bars to denote the bar value.
+4. Now merge the remaining text boxes (with x-value threshold of 10) to make sure all the multi-word legends are part of a single bounding box.
+5. Since legends can be grouped horizontally or vertically, we need to run two sweeping lines to detect legends. 
+6. Run a sweeping line from y-axis and start moving towards the right, and check when the sweeping line intersects with the maximum number of text boxes.
+7. Continue Step 6 with a sweeping line from x-axis and moving to top of the image and check when the sweeping line intersects with maximum number of text boxes.
+8. This maximum intersection gives the bounding boxes for all the legends.
+
+## Label (and legend) detection/finalization
 For each bounding rectangle obtained, it is checked whether there is a text box to the immediate right of the rectangle.
 
 ### Legend text: 
