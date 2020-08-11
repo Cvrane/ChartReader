@@ -117,6 +117,10 @@ To improve text detection algorithm, double-pass algorithm is employed.
 2. Fill the polygons corresponding to these text with white color
 3. Run text detection (2nd pass) on the new image, and consider only the ones with confidence >= 80
 
+<h3 align="center">
+  <img src="images/DoublePassAlgorithm.png" width="800">
+</h3>
+
 ### Bounding Box calculation
 There is an [issue](https://forums.aws.amazon.com/thread.jspa?threadID=325482&tstart=0) with bounding box for vertical text or text with an angle. Therefore, bounding box is calculated from the polygon coordinates (or vertices) from the AWS Rekognition output. 
 
@@ -142,7 +146,7 @@ There is an [issue](https://forums.aws.amazon.com/thread.jspa?threadID=325482&ts
 1. Filter the text boxes which are to the left of y-axis.
 2. Pick the remaining text which are not classified as y-labels as y-text
 
-### Legend detection
+## Legend detection
 1. Filter the text boxes that are above the x-axis, and to the right of y-axis.
 2. Clean the text to remove 'I'. These are obtained since error bars in the charts are detected as 'I' by AWS Rekognition OCR API(s).
 3. Use an appropriate regex to disregard the numerical values. These are mostly the ones which are there on top of the bars to denote the bar value.
