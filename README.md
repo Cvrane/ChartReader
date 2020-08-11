@@ -142,10 +142,6 @@ There is an [issue](https://forums.aws.amazon.com/thread.jspa?threadID=325482&ts
 1. Filter the text boxes which are to the left of y-axis.
 2. Pick the remaining text which are not classified as y-labels as y-text
 
-<h3 align="center">
-  <img src="images/LabelDetectionExample1.png" width="800">
-</h3>
-
 ### Legend detection
 1. Filter the text boxes that are above the x-axis, and to the right of y-axis.
 2. Clean the text to remove 'I'. These are obtained since error bars in the charts are detected as 'I' by AWS Rekognition OCR API(s).
