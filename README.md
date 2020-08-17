@@ -1,6 +1,9 @@
 # ChartReader
 Fully automated end-to-end framework to extract data from bar plots and other figures in scientific research papers using modules such as OpenCV, AWS-Rekognition for text detection in images.
 
+## Figure extraction
+pdffigures2 is used to extract/download images (charts + tables) from the research papers.
+
 ## Image set
 Bar plots used are here: https://drive.google.com/drive/u/1/folders/154sgx3M49NoKOoOjoppsSuvqd2WzqZqX
 
@@ -112,7 +115,7 @@ Both x and y axes are detected correctly for 1006 images out of 1254 images (tes
 AWS-Rekognition is used to detect text in the image. [DetectText](https://docs.aws.amazon.com/rekognition/latest/dg/API_DetectText.html) API is used for detecting text. Only the text with confidence >= 80 are considered.
 
 ### Double-pass algorithm for text detection
-To improve text detection algorithm, double-pass algorithm is employed.
+To improve text detection, double-pass algorithm is employed.
 1. Text detection using detect_text AWS Rekognition API, and considered only the text boxes for which confidence >= 80
 2. Fill the polygons corresponding to these text with white color
 3. Run text detection (2nd pass) on the new image, and consider only the ones with confidence >= 80
@@ -156,26 +159,6 @@ There is an [issue](https://forums.aws.amazon.com/thread.jspa?threadID=325482&ts
 7. Continue Step 6 with a sweeping line from x-axis and moving to top of the image and check when the sweeping line intersects with maximum number of text boxes.
 8. This maximum intersection gives the bounding boxes for all the legends.
 
-## Label (and legend) detection/finalization
-For each bounding rectangle obtained, it is checked whether there is a text box to the immediate right of the rectangle.
-
-### Legend text: 
-The immediate rectangle to the right gives the corresponding legend.
-
-## Cluster count estimation
-1. This is done by determining the number of items in the legend.
-2. Check only the text boxes right to the y-axis and top of x-axis
-3. Filter further by considering text boxes which have non-numeric text
-4. Run the sweeping line algorithm twice now - Once in the x-direction and the second time in the y-direction (because the legends can be stacked in the x-direction or y-direction)
-5. The maximum intersection gives all the legend texts and the number of legends.
-6. Now, these rectangles (or bounding boxes) are merged. The final number of rectangles gives the number of legends and the image colors are clustered into these many groups.
-
-## Color detection
-1. All the pixel values of the image are divided into clusters. The number of clusters are determined by the above described procedure. Also, prior to clustering, all the white pixels are removed.
-2. We then simplify the given plot into multiple plots (one per each cluster). These plots would be a simple bar plot. i.e.., by clustering we convert a stacked bar chart into multiple simpler bar plots.
-3. We then get the contours for the plot, and subsequently bounding rectangles for the contours determined.
-The noise is removed by determining if the number of bounding rectangles are either 0 or abnormally high.
-
 ## Data extraction
 ### Value-tick ratio calculation: 
 This ratio is used to calculate the y-values from each bar-plot using the pixel projection method. Y-axis ticks are detected by left-bounding boxes to the y-axis.
@@ -186,7 +169,19 @@ Since the text detection (numeric values) isn't perfect, once the pixel values f
   <img src="images/equation2.gif">
 </h3>
 
-The height of each bounding box is recorded by the help of the merging rectangles during Cluster count estimation method. This ratio is used to further calculate the y-values :
+### Pattern (or color) estimation
+1. As an initial step, all the bounding boxes for the text in the image are whitened.
+2. Convert the resulting image into a binary image.
+3. Find contours (and bounding rectangles) in the resulting image.
+4. For each legend, find the nearest bounding box to the left and on the same height as the legend.
+5. Find the major color (or pattern) in the bounding box.
+
+### Getting bar plot for each legend
+1. All the pixel values of the image are divided into clusters. The number of clusters are determined by the number of legends detected. Also, prior to clustering, all the white pixels are removed, and the bounding boxes found by above procedure for each legend is whitened.
+2. We then simplify the given plot into multiple plots (one per each cluster). These plots would be a simple bar plot. i.e.., by clustering we convert a stacked bar chart into multiple simpler bar plots.
+3. We then get the contours for the plot, and subsequently bounding rectangles for the contours determined.
+4. For each label, the closest bounding rectangle is picked.
+5. The height of each bounding box is recorded by the help of the merging rectangles obtained by the above procedure. This ratio is used to further calculate the y-values :
 
 <h3 align="center">
   <img src="images/equation1.gif">
