@@ -130,40 +130,40 @@ There is an [issue](https://forums.aws.amazon.com/thread.jspa?threadID=325482&ts
 ## Label Detection
 ### X-labels:
 1. Filter the text boxes which are below the x-axis(, and to the right of y-axis).
-2. Run a sweeping line from x-axis to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
-3. This maximum intersection gives all the bounding boxes for all the x-labels.
+2. Run a sweeping line from x-axis (detected by axes detection algorithm) to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
+3. This maximum intersection gives the bounding boxes for all of the x-labels.
     
 ![](images/LabelDetectionExample.gif)
 
 ### X-text
 1. Filter the text boxes which are below the x-labels
-2. Run a sweeping line from x-axis to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
+2. Run a sweeping line from x-labels to the bottom of the image, and check when the sweeping line intersects with the maximum number of text boxes.
 3. This maximum intersection gives all the bounding boxes for all the x-text.
 
 ### Y-labels:
 1. Filter the text boxes which are to the left of y-axis.
 2. Run a sweeping line from y-axis and start moving towards the left, and check when the sweeping line intersects with the maximum number of text boxes.
-3. Keep only these text boxes where there was maximum intersection, and use python regex to detect only numeric values.
+3. Pick these text boxes where there was maximum intersection, and filter them further using python regex to detect only numeric values.
 
 ### Y-text:
 1. Filter the text boxes which are to the left of y-axis.
-2. Pick the remaining text which are not classified as y-labels as y-text
+2. The remaining text boxes that are not classified as y-labels will be considered as y-text.
 
 ## Legend detection
 1. Filter the text boxes that are above the x-axis, and to the right of y-axis.
 2. Clean the text to remove 'I'. These are obtained since error bars in the charts are detected as 'I' by AWS Rekognition OCR API(s).
 3. Use an appropriate regex to disregard the numerical values. These are mostly the ones which are there on top of the bars to denote the bar value.
 4. Now merge the remaining text boxes (with x-value threshold of 10) to make sure all the multi-word legends are part of a single bounding box.
-5. Since legends can be grouped horizontally or vertically, we need to run two sweeping lines to detect legends. 
+5. Since legends can be grouped horizontally or vertically, we need to run two sweeping lines (in x and y directions) to detect legends. 
 6. Run a sweeping line from y-axis and start moving towards the right, and check when the sweeping line intersects with the maximum number of text boxes.
 7. Continue Step 6 with a sweeping line from x-axis and moving to top of the image and check when the sweeping line intersects with maximum number of text boxes.
-8. This maximum intersection gives the bounding boxes for all the legends.
+8. The maximum intersection obtained from a combined Step 6 and Step 7 gives the bounding boxes for all the legends.
 
 ## Data extraction
 ### Value-tick ratio calculation: 
 This ratio is used to calculate the y-values from each bar-plot using the pixel projection method. Y-axis ticks are detected by left-bounding boxes to the y-axis.
 
-Since the text detection (numeric values) isn't perfect, once the pixel values for the ticks and actual y-label texts are obtained, the outliers are removed by assuming a normal distribution and whether the values deviate very much. Then, the mean distance between the ticks is calculated. Further, the mean value of the actual y-label ticks is calculated. Finally, the value-tick ratio is calculated by :
+Since the text detection (numeric values) isn't perfect, once the pixel values for the ticks and actual y-label texts are obtained, the outliers are removed by assuming a normal distribution and whether the values deviate very much. Then, the mean distance between the ticks is calculated. Further, the mean value of the actual y-label ticks is calculated. Finally, the value-tick ratio is calculated by:
 
 <h3 align="center">
   <img src="images/equation2.gif">
@@ -174,14 +174,15 @@ Since the text detection (numeric values) isn't perfect, once the pixel values f
 2. Convert the resulting image into a binary image.
 3. Find contours (and bounding rectangles) in the resulting image.
 4. For each legend, find the nearest bounding box to the left and on the same height as the legend.
-5. Find the major color (or pattern) in the bounding box.
+5. Find the major color (or pattern) from the nearest bounding box obtained for each legend in Step 4.
 
 ### Getting bar plot for each legend
-1. All the pixel values of the image are divided into clusters. The number of clusters are determined by the number of legends detected. Also, prior to clustering, all the white pixels are removed, and the bounding boxes found by above procedure for each legend is whitened.
-2. We then simplify the given plot into multiple plots (one per each cluster). These plots would be a simple bar plot. i.e.., by clustering we convert a stacked bar chart into multiple simpler bar plots.
-3. We then get the contours for the plot, and subsequently bounding rectangles for the contours determined.
-4. For each label, the closest bounding rectangle is picked.
-5. The height of each bounding box is recorded by the help of the merging rectangles obtained by the above procedure. This ratio is used to further calculate the y-values :
+1. All the pixel values of the image are divided into clusters. Prior to clustering, all the white pixels are removed, and the bounding boxes found by above procedure for each legend are whitened. 
+2. The number of clusters are determined by the number of legends detected. The colors finalized in the above procedure form the initial clusters.
+3. We then simplify the given plot into multiple plots (one per each cluster). These plots would be a simple bar plot. i.e.., by clustering we convert a stacked bar chart into multiple simpler bar plots.
+4. We then get the contours for the plot, and subsequently bounding rectangles for the contours determined.
+5. For each label, the closest bounding rectangle is picked.
+6. The height of each bounding box is recorded by the help of the merging rectangles obtained by the above procedure. This ratio is used to further calculate the y-values :
 
 <h3 align="center">
   <img src="images/equation1.gif">
@@ -192,8 +193,6 @@ Below shows data extraction results on an image.
 <h3 align="center">
   <img src="images/DataExtractionExample.png">
 </h3>
-
-Note that the highlighted numbers (in red) are related to the legend related bounding boxes and WIP to be further processed and removed.
 
 ## Reporting results
 The results (axes, legends, labels, values, captions and file-names) are written to the Excel sheet.
