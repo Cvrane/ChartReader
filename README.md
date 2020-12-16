@@ -60,9 +60,27 @@ Below is the count of images for each type:
 </table>
 
 ### Training phase:
-pretrained model VGG19 is used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
+pretrained models VGG19, EfficientNetB3 are used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
 
-The accuracy is calculated using stratified five-fold cross validation. The accuracy of the model is ``84.08%``. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
+The accuracy is calculated using stratified five-fold cross validation. The accuracy of the models are given below in the table. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
+
+<table>
+  <tr>
+    <td>Model</td>
+    <td>Training parameters</td>
+    <td>Accuracy</td>
+  </tr>
+  <tr>
+    <td>VGG-19</td>
+    <td>47,736,845</td>
+    <td>84.08% (+/- 0.49%)</td>
+  </tr>
+  <tr>
+    <td>EfficientNetB3</td>
+    <td>107,331,693</td>
+    <td>84.53% (+/- 0.92%)</td>
+  </tr>
+</table>
 
 <h3 align="center">
   <img src="images/accuracy-curve1.png" width="800">
