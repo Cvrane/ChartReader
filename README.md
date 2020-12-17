@@ -76,6 +76,11 @@ The accuracy is calculated using stratified five-fold cross validation. The accu
     <td>84.08% (+/- 0.49%)</td>
   </tr>
   <tr>
+    <td>ResNet-152</td>
+    <td>143,428,621</td>
+    <td>83.54% (+/- 1.19%)</td>
+  </tr>
+  <tr>
     <td>EfficientNetB3</td>
     <td>107,331,693</td>
     <td>84.53% (+/- 0.92%)</td>
