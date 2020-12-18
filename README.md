@@ -60,9 +60,9 @@ Below is the count of images for each type:
 </table>
 
 ### Training phase:
-pretrained models VGG19, EfficientNetB3 are used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
+pretrained models VGG-19, ResNet152V2, InceptionV3, EfficientNetB3 are used to train the images, and is run on the test images to classify the images to 13 different types such as Bar chart, Line graph, Pie chart etc.
 
-The accuracy is calculated using stratified five-fold cross validation. The accuracy of the models are given below in the table. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
+The accuracy is calculated using stratified five-fold cross validation. The accuracy of the models are given below in the table. We see that the accuracy is around 84% for all the models used to train the data. The following are the training accuracy and loss curves captured during the training phase for each fold of cross validation.
 
 <table>
   <tr>
@@ -76,9 +76,14 @@ The accuracy is calculated using stratified five-fold cross validation. The accu
     <td>84.08% (+/- 0.49%)</td>
   </tr>
   <tr>
-    <td>ResNet-152</td>
+    <td>ResNet152V2</td>
     <td>143,428,621</td>
     <td>83.54% (+/- 1.19%)</td>
+  </tr>
+  <tr>
+    <td>InceptionV3</td>
+    <td>91,358,605</td>
+    <td>84.53% (+/- 1.61%)</td>
   </tr>
   <tr>
     <td>EfficientNetB3</td>
