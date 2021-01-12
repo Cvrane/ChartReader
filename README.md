@@ -125,6 +125,26 @@ The following are 100 randonly picked images which are predicted as bar plots. H
 3. A certain threshold (=10) is assumed, and the first column where the max-continuous 1s falls in the region [max - threshold, max + threshold] is the y-axis.
 4. Similar approach is followed for the x-axis, but the last row is picked where the max-continuous 1s fall in the region [max - threshold, max + threshold]
 
+
+We experimented with threshold values of 0, 5, 10, 12 and found that threshold value of 10 gives better results for axes detection. Table below shows the accuracy of axes detection with varying threshold values.
+
+<table>
+  <tr>
+    <td>Threshold</td>
+    <td>0</td>
+    <td>5</td>
+    <td>10</td>
+    <td>12</td>
+  </tr>
+  <tr>
+    <td>Accuracy (%)</td>
+    <td>73.2</td>
+    <td>78.8</td>
+    <td>80.22</td>
+    <td>79.26</td>
+  </tr>
+</table>
+
 <h3 align="center">
   <img src="images/AxesDetectionExample1.png" width="800">
 </h3>
@@ -224,3 +244,53 @@ Below shows data extraction results on an image.
 
 ## Reporting results
 The results (axes, legends, labels, values, captions and file-names) are written to the Excel sheet.
+
+Table below shows the evaluation metrics.
+
+<table>
+  <tr>
+    <td>Parameter</td>
+    <td>Accuracy</td>
+    <td>True Positive Rate</td>
+  </tr>
+  <tr>
+    <td>Legends</td>
+    <td>0.8054</td>
+    <td>0.8054</td>
+  </tr>
+  <tr>
+    <td>X-axis ticks</td>
+    <td>0.9755</td>
+    <td>0.9755</td>
+  </tr>
+  <tr>
+    <td>Y-axis ticks</td>
+    <td>0.6815</td>
+    <td>0.6815</td>
+  </tr>
+  <tr>
+    <td>height/value ratio</td>
+    <td>0.8919</td>
+    <td>0.8919</td>
+  </tr>
+  <tr>
+    <td>Y-axis label</td>
+    <td>0.7758</td>
+    <td>0.7758</td>
+  </tr>
+  <tr>
+    <td>X-axis label</td>
+    <td>0.7129</td>
+    <td>0.7129</td>
+  </tr>
+  <tr>
+    <td>Data correlation</td>
+    <td>0.6470</td>
+    <td>0.7504</td>
+  </tr>
+  <tr>
+    <td>Data values</td>
+    <td>0.2158</td>
+    <td>0.4095</td>
+  </tr>
+</table>
