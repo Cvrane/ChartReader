@@ -202,10 +202,9 @@ There is an [issue](https://forums.aws.amazon.com/thread.jspa?threadID=325482&ts
 2. Clean the text to remove 'I'. These are obtained since error bars in the charts are detected as 'I' by AWS Rekognition OCR API(s).
 3. Use an appropriate regex to disregard the numerical values. These are mostly the ones which are there on top of the bars to denote the bar value.
 4. Now merge the remaining text boxes (with x-value threshold of 10) to make sure all the multi-word legends are part of a single bounding box.
-5. Since legends can be grouped horizontally or vertically, we need to run two sweeping lines (in x and y directions) to detect legends. 
-6. Run a sweeping line from y-axis and start moving towards the right, and check when the sweeping line intersects with the maximum number of text boxes.
-7. Continue Step 6 with a sweeping line from x-axis and moving to top of the image and check when the sweeping line intersects with maximum number of text boxes.
-8. The maximum intersection obtained from a combined Step 6 and Step 7 gives the bounding boxes for all the legends.
+5. Group bounding-boxes in such a way that each member in the group is either horizontally or vertically aligned to atleast one other member in the group.
+6. The maximum length group from all the groups obtained in Step 5 gives the bounding boxes for all the legends.
+7. Legend text can be parsed and obtained from these bounding boxes.
 
 ## Data extraction
 ### Value-tick ratio calculation: 
