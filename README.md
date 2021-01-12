@@ -222,7 +222,7 @@ Since the text detection (numeric values) isn't perfect, once the pixel values f
 2. Convert the resulting image into a binary image.
 3. Find contours (and bounding rectangles) in the resulting image.
 4. For each legend, find the nearest bounding box to the left and on the same height as the legend.
-5. Find the major color (or pattern) from the nearest bounding box obtained for each legend in Step 4.
+5. Now in the original image, find the major color (or pattern) from the nearest bounding box obtained for each legend in Step 4.
 
 ### Getting bar plot for each legend
 1. All the pixel values of the image are divided into clusters. Prior to clustering, all the white pixels are removed, and the bounding boxes found by above procedure for each legend are whitened. 
