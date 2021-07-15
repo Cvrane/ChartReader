@@ -160,7 +160,7 @@ Both x and y axes are detected correctly for 1006 images out of 1254 images (tes
 </h3>
 
 ## Text detection
-AWS-Rekognition is used to detect text in the image. [DetectText](https://docs.aws.amazon.com/rekognition/latest/dg/API_DetectText.html) API is used for detecting text. Only the text with confidence >= 80 are considered.
+Amazon Rekognition is used to detect text in the image. [DetectText](https://docs.aws.amazon.com/rekognition/latest/dg/API_DetectText.html) API is used for detecting text. Only the text with confidence >= 80 are considered.
 
 ### Double-pass algorithm for text detection
 To improve text detection, double-pass algorithm is employed.
